@@ -588,9 +588,7 @@ def inject_custom_css():
         }
         """
 
-    st.markdown(f"""
-        <style>
-        {dark_css}
+    st.markdown("<style>\n" + dark_css + """
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
         /* ============ KILL CHART OVERFLOW SCROLLBARS ============ */
