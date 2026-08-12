@@ -682,33 +682,39 @@ def inject_custom_css():
             color: #0f172a !important;
         }
 
-        /* ============ TABS WITH SMOOTH TRANSITIONS ============ */
-        .stTabs [data-baseweb="tab-list"] {
-            gap: 8px;
-            background-color: #e2e8f0;
-            padding: 6px;
-            border-radius: 14px;
+        /* ============ MODERN SEGMENTED CONTROL TABS ============ */
+        [data-baseweb="tab-list"] {
+            background-color: #f1f5f9 !important;
+            border-radius: 12px !important;
+            padding: 6px !important;
+            gap: 8px !important;
+            border-bottom: none !important;
         }
 
-        .stTabs [data-baseweb="tab"] {
-            border-radius: 10px;
-            padding: 10px 18px;
-            font-weight: 600;
-            color: #475569;
+        [data-baseweb="tab"] {
+            background-color: transparent !important;
             border: none !important;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            border-radius: 8px !important;
+            padding: 10px 16px !important;
+            color: #64748b !important;
+            font-weight: 500 !important;
+            transition: all 0.3s ease !important;
         }
 
-        .stTabs [data-baseweb="tab"]:hover {
-            color: #0f172a !important;
-            background-color: rgba(255, 255, 255, 0.6) !important;
+        [data-baseweb="tab"]:hover {
+            color: #1f2937 !important;
+            background-color: #e2e8f0 !important;
         }
 
-        .stTabs [aria-selected="true"] {
+        [data-baseweb="tab"][aria-selected="true"] {
             background-color: #ffffff !important;
             color: #4f46e5 !important;
-            font-weight: 700 !important;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+            font-weight: 600 !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+        }
+
+        [data-baseweb="tab-highlight"] {
+            display: none !important;
         }
 
         /* ============ FORM INPUTS & FOCUS MICRO-INTERACTIONS ============ */
