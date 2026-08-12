@@ -773,32 +773,47 @@ def inject_custom_css():
             margin-top: 40px;
         }
 
-        /* ============ FLOATING ACTION BUTTON (FAB) CHATBOT WIDGET ============ */
+        /* ============ PERFECT CIRCULAR FLOATING ACTION BUTTON (FAB) ============ */
         div[data-testid="stPopover"] {
             position: fixed !important;
-            bottom: 35px !important;
-            right: 35px !important;
+            bottom: 30px !important;
+            right: 30px !important;
             z-index: 999999 !important;
         }
 
         div[data-testid="stPopover"] > button {
+            border-radius: 50% !important;
+            width: 64px !important;
+            height: 64px !important;
+            min-width: 64px !important;
+            min-height: 64px !important;
+            max-width: 64px !important;
+            max-height: 64px !important;
             background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%) !important;
             color: #ffffff !important;
-            border-radius: 50px !important;
-            padding: 14px 26px !important;
-            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.6) !important;
-            font-weight: 700 !important;
-            font-size: 1.15rem !important;
             border: 2px solid #ffffff !important;
+            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.6) !important;
+            padding: 0 !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
-            transition: all 0.3s ease !important;
+            transition: all 0.25s ease !important;
         }
 
         div[data-testid="stPopover"] > button:hover {
-            transform: scale(1.08) !important;
-            box-shadow: 0 12px 35px rgba(168, 85, 247, 0.7) !important;
+            transform: scale(1.12) !important;
+            box-shadow: 0 12px 35px rgba(168, 85, 247, 0.8) !important;
+        }
+
+        div[data-testid="stPopover"] > button svg {
+            display: none !important;
+        }
+
+        div[data-testid="stPopover"] > button p {
+            font-size: 30px !important;
+            margin: 0 !important;
+            line-height: 1 !important;
+            color: #ffffff !important;
         }
 
         /* Styling cho cửa sổ chat popup nổi ra ở góc dưới bên phải */
@@ -882,7 +897,7 @@ def render_floating_cskh_widget(df_all, summary, budget_limits):
         ]
 
     with st.container():
-        with st.popover("🤖 Trợ Lý Gemini AI", use_container_width=False):
+        with st.popover("🤖", help="Mở Trợ Lý Gemini AI 🎓"):
             st.markdown("### 💬 Trợ Lý CSKH & Điều Hành AI 🎓")
             st.caption("Thực thi mọi thao tác: Thêm khoản chi, xóa giao dịch, đặt hạn mức, tư vấn tiết kiệm...")
             
