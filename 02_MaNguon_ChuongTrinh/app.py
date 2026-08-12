@@ -607,7 +607,23 @@ def inject_custom_css():
         /* ============ CLEAN UP DEFAULT STREAMLIT MENU & FOOTER ============ */
         #MainMenu { visibility: hidden !important; }
         footer { visibility: hidden !important; }
-        header { visibility: hidden !important; }
+        header[data-testid="stHeader"] {
+            background: transparent !important;
+            z-index: 9999 !important;
+        }
+
+        /* Nút mở/đóng Sidebar luôn hiển thị rõ ràng ở góc trên bên trái */
+        button[data-testid="stSidebarCollapseButton"],
+        [data-testid="stHeader"] button {
+            visibility: visible !important;
+            display: flex !important;
+            opacity: 1 !important;
+            color: #4f46e5 !important;
+            background: #ffffff !important;
+            border-radius: 50% !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+            border: 1px solid #e2e8f0 !important;
+        }
 
         /* ============ GLOBAL FONT & BASE TYPOGRAPHY ============ */
         html, body, [class*="css"] {
@@ -892,25 +908,31 @@ def inject_custom_css():
         }
 
         /* ============ PERFECT CIRCULAR FLOATING ACTION BUTTON (FAB) ============ */
-        div[data-testid="stPopover"] {
+        div[data-testid="stPopover"],
+        [data-testid="stElementContainer"]:has(div[data-testid="stPopover"]) {
             position: fixed !important;
             bottom: 25px !important;
             right: 25px !important;
             z-index: 999999 !important;
         }
 
-        div[data-testid="stPopover"] > button {
+        div[data-testid="stPopover"] button,
+        [data-testid="stPopover"] > button {
+            position: fixed !important;
+            bottom: 25px !important;
+            right: 25px !important;
+            z-index: 999999 !important;
             border-radius: 50% !important;
-            width: 60px !important;
-            height: 60px !important;
-            min-width: 60px !important;
-            min-height: 60px !important;
-            max-width: 60px !important;
-            max-height: 60px !important;
+            width: 64px !important;
+            height: 64px !important;
+            min-width: 64px !important;
+            min-height: 64px !important;
+            max-width: 64px !important;
+            max-height: 64px !important;
             background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%) !important;
             color: #ffffff !important;
             border: 2px solid #ffffff !important;
-            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.6) !important;
+            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.6) !important;
             padding: 0 !important;
             display: flex !important;
             align-items: center !important;
@@ -918,7 +940,8 @@ def inject_custom_css():
             transition: all 0.25s ease !important;
         }
 
-        div[data-testid="stPopover"] > button:hover {
+        div[data-testid="stPopover"] button:hover,
+        [data-testid="stPopover"] > button:hover {
             transform: scale(1.1) !important;
             box-shadow: 0 12px 35px rgba(168, 85, 247, 0.8) !important;
         }
