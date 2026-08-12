@@ -1,7 +1,3 @@
-# ------------------------------------------------------------------------------
-# IMPORT ANTIGRAVITY & REQUIRED LIBRARIES
-# ------------------------------------------------------------------------------
-# import antigravity  # Đã comment để tránh tự mở trang xkcd.com Easter Egg 🚀
 import streamlit as st
 import sqlite3
 import datetime
@@ -14,19 +10,14 @@ import google.generativeai as genai
 from dotenv import load_dotenv
 from typing import TypedDict
 
-# Định nghĩa Schema cấu trúc dữ liệu cho Gemini trả về
 class TransactionSchema(TypedDict):
     type: str
     amount: int
     category: str
     description: str
 
-# Tải biến môi trường từ file .env (ghi đè biến cũ nếu có thay đổi)
 load_dotenv(override=True)
 
-# ------------------------------------------------------------------------------
-# CONFIG & SYSTEM SETUP (STUDENT THEME 🎓)
-# ------------------------------------------------------------------------------
 st.set_page_config(
     page_title="Sổ Tay Quản Lý Chi Tiêu Sinh Viên AI 🎓",
     page_icon="🎓",
@@ -36,7 +27,6 @@ st.set_page_config(
 
 DB_FILE = "chi_tieu.db"
 
-# Danh mục dành cho sinh viên
 STUDENT_CATEGORIES = [
     "Ăn uống & Cafe",
     "Tiền nhà & Tiện ích",
@@ -49,9 +39,6 @@ STUDENT_CATEGORIES = [
     "Khác"
 ]
 
-# ------------------------------------------------------------------------------
-# DATABASE ENGINE FUNCTIONS
-# ------------------------------------------------------------------------------
 def get_db_connection():
     """Tạo kết nối tới CSDL SQLite"""
     conn = sqlite3.connect(DB_FILE, check_same_thread=False)
@@ -63,7 +50,6 @@ def init_db():
     conn = get_db_connection()
     cursor = conn.cursor()
     
-    # Bảng giao dịch
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS giao_dich (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -76,7 +62,6 @@ def init_db():
         )
     """)
     
-    # Bảng hạn mức ngân sách
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS han_muc (
             danh_muc TEXT PRIMARY KEY,
@@ -85,7 +70,6 @@ def init_db():
     """)
     conn.commit()
     
-    # Dữ liệu mẫu ban đầu dành riêng cho Sinh Viên
     cursor.execute("SELECT COUNT(*) FROM giao_dich")
     if cursor.fetchone()[0] == 0:
         today = datetime.date.today()
@@ -100,7 +84,6 @@ def init_db():
         ]
         cursor.executemany("INSERT INTO giao_dich (loai, so_tien, danh_muc, ngay, ghi_chu) VALUES (?, ?, ?, ?, ?)", sample_transactions)
         
-        # Hạn mức chi tiêu mẫu sinh viên
         sample_limits = [
             ("Ăn uống & Cafe", 2500000),
             ("Tiền nhà & Tiện ích", 2000000),
@@ -112,21 +95,15 @@ def init_db():
         conn.commit()
     conn.close()
 
-# Khởi chạy CSDL ban đầu
 init_db()
 
-# ------------------------------------------------------------------------------
-# DATA LOADING & SYNC FUNCTIONS
-# ------------------------------------------------------------------------------
 def load_data():
     """Truy vấn dữ liệu mới nhất từ CSDL SQLite và đồng bộ vào st.session_state"""
     conn = get_db_connection()
     
-    # 1. Load DataFrame giao dịch
     df = pd.read_sql_query("SELECT id, loai, so_tien, danh_muc, ngay, ghi_chu FROM giao_dich ORDER BY ngay DESC, id DESC", conn)
     st.session_state["df_transactions"] = df
     
-    # 2. Load Thống kê tài chính
     cursor = conn.cursor()
     cursor.execute("""
         SELECT 
@@ -143,19 +120,14 @@ def load_data():
         "so_du": tong_thu - tong_chi
     }
     
-    # 3. Load Hạn mức ngân sách
     cursor.execute("SELECT danh_muc, so_tien_limit FROM han_muc")
     st.session_state["budget_limits"] = {r["danh_muc"]: r["so_tien_limit"] for r in cursor.fetchall()}
     
     conn.close()
 
-# Khởi tạo dữ liệu vào session_state nếu chưa có
 if "df_transactions" not in st.session_state:
     load_data()
 
-# ------------------------------------------------------------------------------
-# DATABASE CRUD HELPERS (WITH AUTO-SYNC & AUTO RERUN)
-# ------------------------------------------------------------------------------
 def add_transaction(loai, so_tien, danh_muc, ngay, ghi_chu):
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -206,9 +178,6 @@ def set_budget_limit(danh_muc, limit_val):
     load_data()
     st.rerun()
 
-# ------------------------------------------------------------------------------
-# GOOGLE GEMINI AI SERVICES (SECURE CREDENTIALS)
-# ------------------------------------------------------------------------------
 def get_api_key():
     """Lấy API Key bảo mật, không hardcode và tránh lỗi StreamlitSecretNotFoundError"""
     load_dotenv(override=True)
@@ -226,7 +195,6 @@ def get_api_key():
         
     return ""
 
-# Thông báo lỗi Geo-blocking chuẩn hóa
 GEO_BLOCK_MSG = (
     "🌐 **Hệ thống đang bị chặn địa lý (Geo-blocking).**\n\n"
     "Google Gemini API không khả dụng tại vị trí hiện tại của bạn.\n\n"
@@ -263,7 +231,6 @@ def init_gemini():
     if not api_key:
         return False
     try:
-        # Inject proxy trước khi khởi tạo kết nối API
         _inject_proxy()
         genai.configure(api_key=api_key)
         return True
@@ -331,7 +298,6 @@ def analyze_natural_language_expense(prompt_input, summary_info=None, budget_lim
         response = model.generate_content(prompt_input)
         parsed = json.loads(response.text)
 
-        # Xử lý an toàn nếu Gemini trả về dạng List/Array thay vì Dict
         if isinstance(parsed, list):
             if len(parsed) > 0 and isinstance(parsed[0], dict):
                 first_item = parsed[0]
@@ -495,9 +461,6 @@ def chat_with_gemini_agent(user_query, df_transactions, summary, budget_limits):
             return {"action": "CHAT", "reply": GEO_BLOCK_MSG}
         return {"action": "CHAT", "reply": f"Dạ em là Trợ lý CSKH, rất tiếc có lỗi kết nối: {e}"}
 
-# ------------------------------------------------------------------------------
-# PLOTLY DATA VISUALIZATION FUNCTIONS (NATIVE STREAMLIT THEMING)
-# ------------------------------------------------------------------------------
 def draw_pie_chart(df_all):
     """Vẽ biểu đồ tròn hiển thị danh mục chi tiêu nhiều nhất"""
     df_chi = df_all[df_all["loai"] == "Chi"]
@@ -568,7 +531,6 @@ def draw_line_chart(df_all):
     daily = df_month.groupby(df_month["ngay_dt"].dt.date)["so_tien"].sum().reset_index()
     daily.columns = ["Ngày", "Tổng chi"]
     daily = daily.sort_values("Ngày")
-    # Thêm cột tích lũy
     daily["Tích lũy"] = daily["Tổng chi"].cumsum()
     
     fig_line = px.line(
@@ -594,9 +556,6 @@ def draw_line_chart(df_all):
     )
     st.plotly_chart(fig_line, use_container_width=True, theme="streamlit")
 
-# ------------------------------------------------------------------------------
-# INJECT CUSTOM STYLE (LIGHT/DARK MODE ADAPTIVE CSS - NO HARDCODED COLORS)
-# ------------------------------------------------------------------------------
 def inject_custom_css():
     """Đưa CSS tùy biến vào Streamlit, sử dụng hoàn toàn CSS variables + micro-animations"""
     st.markdown("""
@@ -863,9 +822,6 @@ def inject_custom_css():
         </style>
     """, unsafe_allow_html=True)
 
-# ------------------------------------------------------------------------------
-# SIDEBAR COMPONENT
-# ------------------------------------------------------------------------------
 def render_sidebar():
     """Hiển thị giao diện menu bên hông"""
     with st.sidebar:
@@ -880,7 +836,6 @@ def render_sidebar():
 
         st.markdown("---")
 
-        # Hiển thị trạng thái API Key
         if get_api_key():
             st.success("🔑 Gemini API Key: Đã được kết nối thành công từ môi trường (.env / Secrets)")
         else:
@@ -893,7 +848,6 @@ def render_sidebar():
         if st.button("💾 Đặt Hạn Mức", type="primary", use_container_width=True, key="sb_save_limit_btn"):
             set_budget_limit(selected_b_cat, b_limit_val)
 
-        # Chỉ số sức khỏe tài chính nhanh
         st.markdown("---")
         st.subheader("💚 Sức Khỏe Tài Chính")
         sb_summary = st.session_state.get("summary", {"tong_thu": 0, "tong_chi": 0, "so_du": 0})
@@ -987,9 +941,6 @@ def render_floating_cskh_widget(df_all, summary, budget_limits):
                             st.session_state.messages.append({"role": "assistant", "content": reply_text})
                             st.rerun()
 
-# ------------------------------------------------------------------------------
-# HEADER COMPONENT
-# ------------------------------------------------------------------------------
 def render_header():
     """Hiển thị thanh tiêu đề và các thông điệp phản hồi nhanh"""
     header_col1, header_col2 = st.columns([0.8, 0.2])
@@ -1002,27 +953,19 @@ def render_header():
             st.session_state["toast_msg"] = "🔄 Dữ liệu ví sinh viên đã được đồng bộ mới nhất!"
             st.rerun()
 
-    # Hiển thị thông báo Toast phản hồi người dùng nếu có trong Session State
     if "toast_msg" in st.session_state and st.session_state["toast_msg"]:
         st.toast(st.session_state.pop("toast_msg"), icon="🎒")
 
-# ------------------------------------------------------------------------------
-# MAIN APPLICATION ROUTING
-# ------------------------------------------------------------------------------
 def main():
-    # Nhúng CSS tùy biến
     inject_custom_css()
     
-    # Hiển thị các Component dùng chung
     render_sidebar()
     render_header()
     
-    # Tải dữ liệu toàn cục
     df_all = st.session_state.get("df_transactions", pd.DataFrame())
     summary = st.session_state.get("summary", {"tong_thu": 0.0, "tong_chi": 0.0, "so_du": 0.0})
     budget_limits = st.session_state.get("budget_limits", {})
     
-    # Các Tabs chức năng chính chiếm 100% chiều rộng màn hình
     tab1, tab2, tab3, tab4 = st.tabs([
         "📊 Thống Kê", 
         "➕ Thêm Chi Tiêu", 
@@ -1030,9 +973,6 @@ def main():
         "🧠 Gợi Ý Tiết Kiệm"
     ])
 
-    # ==============================================================================
-    # TAB 1: THỐNG KÊ & NGÂN SÁCH
-    # ==============================================================================
     with tab1:
         tong_thu = summary["tong_thu"]
         tong_chi = summary["tong_chi"]
@@ -1055,7 +995,6 @@ def main():
         elif 0 < so_du < 500000:
             st.warning("⚡ **CẢNH BÁO BÁO ĐỘNG**: Số dư ví chỉ còn dưới 500.000 ₫! Hãy tiết kiệm cho những ngày còn lại của tháng.")
 
-        # So sánh tháng này vs tháng trước
         if not df_all.empty:
             df_all_copy = df_all.copy()
             df_all_copy["ngay_dt"] = pd.to_datetime(df_all_copy["ngay"])
@@ -1089,7 +1028,6 @@ def main():
 
         st.markdown("---")
         
-        # Tiến trình Hạn mức Ngân sách Sinh viên
         st.subheader("🎯 Hạn Mức Chi Tiêu Cho Sinh Viên Tháng Này")
         if not df_all.empty:
             df_chi = df_all[df_all["loai"] == "Chi"]
@@ -1119,7 +1057,6 @@ def main():
         
         st.markdown("---")
         
-        # Biểu đồ Plotly linh hoạt, tự động tương thích Light/Dark theme của Streamlit
         if not df_all.empty:
             c1, c2 = st.columns(2)
             with c1:
@@ -1135,9 +1072,6 @@ def main():
         else:
             st.info("Chưa có giao dịch nào để hiển thị biểu đồ.")
 
-    # ==============================================================================
-    # TAB 2: THÊM CHI TIÊU
-    # ==============================================================================
     with tab2:
         chat_col1, chat_col2 = st.columns([0.75, 0.25])
         with chat_col1:
@@ -1157,12 +1091,10 @@ def main():
                 {"role": "assistant", "content": "Chào bạn! Mình là Trợ lý AI Bóc Tách & Cố Vấn Ví Sinh Viên 🎓. Hôm nay bạn mới tiêu khoản gì hay nhận tiền thu nhập nào không? Gõ cho mình biết nhé!"}
             ]
 
-        # Hiển thị lịch sử hội thoại trong Box Chat Tab 2
         for msg in st.session_state.expense_chat_history:
             with st.chat_message(msg["role"]):
                 st.markdown(msg["content"])
 
-        # Ô nhập liệu Chat Box
         user_exp_input = st.chat_input("Gõ câu chi tiêu hoặc thu nhập của bạn...", key="tab2_chat_input")
         if user_exp_input:
             st.session_state.expense_chat_history.append({"role": "user", "content": user_exp_input})
@@ -1195,7 +1127,6 @@ def main():
                             smart_advice = str(result.get("smart_advice", ""))
                             consequences = str(result.get("consequences", ""))
 
-                            # Tạo nội dung phản hồi trong Chat Box
                             badge = "🚨 **CẢNH BÁO BÁO ĐỘNG CRITICAL**" if warning_lvl == "CRITICAL" else ("⚠️ **CẢNH BÁO CAO WARNING**" if warning_lvl == "WARNING" else "✅ **CHI TIÊU AN TOÀN SAFE**")
                             
                             ai_reply = f"""
@@ -1214,7 +1145,6 @@ def main():
                             st.markdown(ai_reply)
                             st.session_state.expense_chat_history.append({"role": "assistant", "content": ai_reply})
                             
-                            # Lưu vào session state để nút lưu xác nhận bên dưới hoạt động
                             st.session_state["ai_parsed_data"] = {
                                 "loai": loai,
                                 "so_tien": so_tien,
@@ -1229,7 +1159,6 @@ def main():
                             st.markdown(err_msg)
                             st.session_state.expense_chat_history.append({"role": "assistant", "content": err_msg})
 
-        # Nút xác nhận lưu khoản chi tiêu vừa chat bên dưới
         if "ai_parsed_data" in st.session_state:
             parsed_info = st.session_state["ai_parsed_data"]
             st.markdown("---")
@@ -1272,9 +1201,6 @@ def main():
                 else:
                     add_transaction(loai_input, so_tien_input, danh_muc_input, ngay_input.strftime("%Y-%m-%d"), ghi_chu_input)
 
-    # ==============================================================================
-    # TAB 3: LỊCH SỬ
-    # ==============================================================================
     with tab3:
         st.subheader("📜 Lịch Sử Chi Tiêu")
         
@@ -1291,7 +1217,6 @@ def main():
                 avail_months = ["Tất cả"]
             month_filter = st.selectbox("📅 Lọc theo tháng", avail_months, key="month_select")
 
-        # Lọc giao dịch
         df_filtered = df_all.copy() if not df_all.empty else pd.DataFrame()
         if not df_filtered.empty:
             if kw_filter:
@@ -1341,11 +1266,9 @@ def main():
                 st.markdown("##### 🗑️ Xóa Giao Dịch")
                 selected_del_id = st.selectbox("Chọn ID để xóa", df_filtered["id"].tolist(), key="sb_del_id")
                 
-                # Hiển thị thông tin giao dịch sắp xóa
                 del_row = df_filtered[df_filtered["id"] == selected_del_id].iloc[0]
                 st.warning(f"⚠️ Bạn sắp xóa: **{del_row['loai']}** — {float(del_row['so_tien']):,.0f} ₫ ({del_row['danh_muc']}) — {del_row['ghi_chu']}")
                 
-                # Checkbox xác nhận 2 bước
                 confirm_del = st.checkbox("Tôi xác nhận muốn xóa giao dịch này", key="confirm_del_checkbox")
                 if st.button("🗑️ Xác Nhận Xóa", type="secondary", key="del_confirm_btn", disabled=not confirm_del):
                     delete_transaction(selected_del_id)
@@ -1403,9 +1326,6 @@ def main():
                 except Exception as ex:
                     st.error(f"Lỗi đọc file CSV: {ex}")
 
-    # ==============================================================================
-    # TAB 4: GỢI Ý TIẾT KIỆM
-    # ==============================================================================
     with tab4:
         st.subheader("🧠 Trợ Lý AI Tư Vấn Tiết Kiệm Cho Sinh Viên")
         st.caption("Google Gemini AI sẽ phân tích thói quen chi tiêu của bạn và đưa ra lời khuyên thực tế để tiết kiệm hiệu quả.")
@@ -1416,10 +1336,8 @@ def main():
                     advice = generate_savings_advice(df_all)
                     st.markdown(advice)
 
-    # Render Floating Action Button (FAB) CSKH Gemini AI Widget anchored at bottom-right corner of viewport (Global across all tabs)
     render_floating_cskh_widget(df_all, summary, budget_limits)
 
-    # Footer
     st.markdown("""
         <div class="app-footer">
             Powered by <strong>Google Gemini AI</strong> & <strong>Streamlit</strong> | Made with ❤️ for Students 🎓
