@@ -593,11 +593,53 @@ def inject_custom_css():
             animation: fadeInUp 0.4s ease-out both;
         }
 
-        /* ============ SIDEBAR SAAS STYLING ============ */
+        /* ============ PIXEL-PERFECT SIDEBAR SAAS OPTIMIZATION ============ */
         [data-testid="stSidebar"] {
-            background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%) !important;
-            border-right: 1px solid rgba(226, 232, 240, 0.8) !important;
-            padding: 1.5rem 1rem !important;
+            background-color: #ffffff !important;
+            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.03) !important;
+            border-right: 1px solid #e2e8f0 !important;
+        }
+
+        [data-testid="stSidebar"] .block-container {
+            padding: 1.5rem 24px !important;
+        }
+
+        [data-testid="stSidebar"] .stButton > button {
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
+            color: #ffffff !important;
+            font-weight: 600 !important;
+            border: none !important;
+            border-radius: 8px !important;
+            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4) !important;
+            transition: all 0.25s ease !important;
+        }
+
+        [data-testid="stSidebar"] .stButton > button:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 6px 18px rgba(99, 102, 241, 0.5) !important;
+        }
+
+        [data-testid="stSidebar"] [data-testid="stAlert"], [data-testid="stSidebar"] .stAlert {
+            background-color: #ecfdf5 !important;
+            border-left: 4px solid #10b981 !important;
+            color: #065f46 !important;
+            border-radius: 6px !important;
+            border-top: none !important;
+            border-right: none !important;
+            border-bottom: none !important;
+        }
+
+        [data-testid="stSidebar"] hr {
+            border-top: 1px dashed #e2e8f0 !important;
+            border-bottom: none !important;
+            border-left: none !important;
+            border-right: none !important;
+            margin: 1.5rem 0 !important;
+        }
+
+        [data-testid="stSidebar"] [data-testid="stCaptionContainer"], [data-testid="stSidebar"] caption {
+            color: #64748b !important;
+            font-size: 0.85rem !important;
         }
 
         /* ============ GRADIENT HEADER ============ */
