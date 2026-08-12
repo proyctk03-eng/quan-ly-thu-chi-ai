@@ -15,3 +15,8 @@ drive-download*
 
 cloudflared.exe
 *.exe
+
+# Exclude temporary runner scripts & scratch
+scratch/
+start_*.py
+agent_test.py
