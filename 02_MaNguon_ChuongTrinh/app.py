@@ -792,20 +792,35 @@ def inject_custom_css():
             transform: scale(0.97) !important;
         }
 
-        /* ============ WEBKIT SCROLLBAR ============ */
+        /* ============ GLOBAL SAAS SCROLLBAR OPTIMIZATION ============ */
+        * {
+            scrollbar-width: thin !important;
+            scrollbar-color: #cbd5e1 transparent !important;
+        }
+
         ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
+            width: 6px !important;
+            height: 6px !important;
         }
+
         ::-webkit-scrollbar-track {
-            background: transparent;
+            background: transparent !important;
+            border-radius: 10px !important;
         }
+
         ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 10px;
+            background: #cbd5e1 !important;
+            border-radius: 10px !important;
         }
+
         ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
+            background: #94a3b8 !important;
+        }
+
+        /* DATAFRAME & TABLE SCROLLBAR HARMONIZATION */
+        [data-testid="stDataFrame"] div, [data-testid="stTable"] div {
+            scrollbar-width: thin !important;
+            scrollbar-color: #cbd5e1 transparent !important;
         }
 
         /* ============ PROGRESS BAR ROUNDED TRACK & FILL ============ */
