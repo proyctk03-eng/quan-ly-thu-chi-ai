@@ -913,14 +913,21 @@ def inject_custom_css():
             position: fixed !important;
             bottom: 25px !important;
             right: 25px !important;
+            left: auto !important;
+            top: auto !important;
             z-index: 999999 !important;
+            width: 64px !important;
+            height: 64px !important;
         }
 
         div[data-testid="stPopover"] button,
-        [data-testid="stPopover"] > button {
+        div[data-testid="stPopover"] > button,
+        [data-testid="stPopover"] button {
             position: fixed !important;
             bottom: 25px !important;
             right: 25px !important;
+            left: auto !important;
+            top: auto !important;
             z-index: 999999 !important;
             border-radius: 50% !important;
             width: 64px !important;
@@ -946,11 +953,13 @@ def inject_custom_css():
             box-shadow: 0 12px 35px rgba(168, 85, 247, 0.8) !important;
         }
 
-        div[data-testid="stPopover"] > button svg {
+        div[data-testid="stPopover"] button svg,
+        [data-testid="stPopover"] > button svg {
             display: none !important;
         }
 
-        div[data-testid="stPopover"] > button p {
+        div[data-testid="stPopover"] button p,
+        [data-testid="stPopover"] > button p {
             font-size: 28px !important;
             margin: 0 !important;
             line-height: 1 !important;
@@ -963,22 +972,26 @@ def inject_custom_css():
             100% { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        /* Cửa sổ chat card mở ra ghim CHUẨN GÓC DƯỚI BÊN PHẢI với hiệu ứng Pop-in */
-        div[data-testid="stPopoverBody"], div[data-testid="stPopoverContent"] {
+        /* Cửa sổ chat card mở ra GHIM CHUẨN GÓC DƯỚI BÊN PHẢI (Bottom-Right Viewport Locked) */
+        div[data-testid="stPopoverBody"],
+        div[data-testid="stPopoverContent"],
+        [data-baseweb="popover"] {
             position: fixed !important;
             bottom: 95px !important;
             right: 25px !important;
+            left: auto !important;
+            top: auto !important;
             z-index: 999999 !important;
             border-radius: 16px !important;
             border: 1px solid rgba(226, 232, 240, 0.9) !important;
             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25) !important;
             padding: 18px !important;
-            width: 450px !important;
+            width: 420px !important;
             max-width: 95vw !important;
-            height: 650px !important;
-            max-height: 85vh !important;
+            height: 600px !important;
+            max-height: 82vh !important;
             scrollbar-width: none !important;
-            animation: popInAI 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards !important;
+            animation: popInAI 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards !important;
         }
 
         div[data-testid="stPopoverBody"]::-webkit-scrollbar, div[data-testid="stPopoverContent"]::-webkit-scrollbar {
