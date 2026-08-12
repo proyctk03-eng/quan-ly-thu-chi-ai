@@ -560,21 +560,27 @@ def inject_custom_css():
     """Đưa CSS tùy biến vào Streamlit, sử dụng hoàn toàn CSS variables + micro-animations"""
     st.markdown("""
         <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
         /* ============ CLEAN UP DEFAULT STREAMLIT MENU & FOOTER ============ */
         #MainMenu { visibility: hidden !important; }
         footer { visibility: hidden !important; }
         header { visibility: hidden !important; }
 
-        /* ============ GLOBAL FONT & BASE ============ */
+        /* ============ GLOBAL FONT & BASE TYPOGRAPHY ============ */
         html, body, [class*="css"] {
-            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Inter', 'Plus Jakarta Sans', 'Roboto', 'Segoe UI', sans-serif !important;
         }
 
         .stApp {
-            background-color: var(--background-color) !important;
-            color: var(--text-color) !important;
+            background-color: #f4f7f6 !important;
+            color: #1f2937 !important;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: #1f2937 !important;
+            margin-bottom: 0.8rem !important;
+            font-weight: 700 !important;
         }
 
         /* ============ FADE-IN ANIMATION ============ */
@@ -583,25 +589,15 @@ def inject_custom_css():
             to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
+        .stTabs, div[data-testid="stMetric"], .stForm, .stPlotlyChart {
+            animation: fadeInUp 0.4s ease-out both;
         }
 
-        .stTabs, div[data-testid="stMetric"], .stForm {
-            animation: fadeInUp 0.5s ease-out both;
-        }
-
-        /* ============ GLASSMORPHISM SIDEBAR ============ */
+        /* ============ SIDEBAR SAAS STYLING ============ */
         [data-testid="stSidebar"] {
-            background: linear-gradient(
-                180deg,
-                color-mix(in srgb, var(--secondary-background-color) 85%, transparent) 0%,
-                var(--secondary-background-color) 100%
-            ) !important;
-            backdrop-filter: blur(12px) !important;
-            -webkit-backdrop-filter: blur(12px) !important;
-            border-right: 1px solid rgba(128, 128, 128, 0.12) !important;
+            background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%) !important;
+            border-right: 1px solid rgba(226, 232, 240, 0.8) !important;
+            padding: 1.5rem 1rem !important;
         }
 
         /* ============ GRADIENT HEADER ============ */
@@ -614,104 +610,103 @@ def inject_custom_css():
             -webkit-text-fill-color: transparent;
             letter-spacing: -0.5px;
             margin-bottom: 0.2rem;
-            animation: shimmer 4s linear infinite;
         }
 
-        /* ============ METRIC CARDS WITH HOVER ============ */
-        div[data-testid="stMetric"] {
-            background: var(--secondary-background-color) !important;
-            border: 1px solid rgba(128, 128, 128, 0.12) !important;
+        /* ============ SAAS CARD UI & HOVER ANIMATIONS ============ */
+        div[data-testid="stMetric"], .stPlotlyChart, .stAltairChart, .stForm, .health-card {
+            background: #ffffff !important;
+            border: 1px solid rgba(226, 232, 240, 0.8) !important;
             border-radius: 16px !important;
-            padding: 18px 22px !important;
-            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-                        box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-                        border-color 0.25s ease !important;
+            padding: 20px !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
         }
 
-        div[data-testid="stMetric"]:hover {
+        div[data-testid="stMetric"]:hover, .stPlotlyChart:hover, .stForm:hover, .health-card:hover {
             transform: translateY(-4px) !important;
-            box-shadow: 0 8px 25px rgba(14, 165, 233, 0.15) !important;
-            border-color: rgba(14, 165, 233, 0.35) !important;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08) !important;
+            border-color: rgba(99, 102, 241, 0.3) !important;
         }
 
         div[data-testid="stMetricLabel"] > div {
             font-size: 0.95rem !important;
             font-weight: 600 !important;
-            color: var(--text-color) !important;
-            opacity: 0.8 !important;
+            color: #64748b !important;
         }
 
         div[data-testid="stMetricValue"] > div {
             font-size: 1.8rem !important;
             font-weight: 800 !important;
-            color: var(--text-color) !important;
+            color: #0f172a !important;
         }
 
         /* ============ TABS WITH SMOOTH TRANSITIONS ============ */
         .stTabs [data-baseweb="tab-list"] {
             gap: 8px;
-            background-color: var(--secondary-background-color);
+            background-color: #e2e8f0;
             padding: 6px;
             border-radius: 14px;
-            border: 1px solid rgba(128, 128, 128, 0.12);
         }
 
         .stTabs [data-baseweb="tab"] {
             border-radius: 10px;
             padding: 10px 18px;
             font-weight: 600;
-            color: var(--text-color);
-            opacity: 0.7;
+            color: #475569;
             border: none !important;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
         }
 
         .stTabs [data-baseweb="tab"]:hover {
-            opacity: 0.9 !important;
-            background-color: color-mix(in srgb, var(--primary-color) 10%, transparent) !important;
+            color: #0f172a !important;
+            background-color: rgba(255, 255, 255, 0.6) !important;
         }
 
         .stTabs [aria-selected="true"] {
-            background-color: var(--background-color) !important;
-            color: var(--primary-color) !important;
-            opacity: 1.0 !important;
-            box-shadow: 0 2px 8px rgba(14, 165, 233, 0.12) !important;
+            background-color: #ffffff !important;
+            color: #4f46e5 !important;
+            font-weight: 700 !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
         }
 
-        /* ============ FORM INPUTS WITH GRADIENT FOCUS ============ */
+        /* ============ FORM INPUTS & FOCUS MICRO-INTERACTIONS ============ */
         .stTextInput input, .stNumberInput input, .stSelectbox > div > div, .stDateInput input {
-            background-color: var(--secondary-background-color) !important;
-            border: 1.5px solid rgba(128, 128, 128, 0.15) !important;
+            background-color: #ffffff !important;
+            border: 1.5px solid #cbd5e1 !important;
             border-radius: 10px !important;
-            color: var(--text-color) !important;
+            color: #0f172a !important;
             font-weight: 500 !important;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
         }
 
-        .stTextInput input:focus, .stNumberInput input:focus, .stDateInput input:focus {
-            border-color: #0EA5E9 !important;
-            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15) !important;
+        .stTextInput input:focus, .stNumberInput input:focus, .stDateInput input:focus,
+        .stTextInput:focus-within input, .stNumberInput:focus-within input, .stSelectbox:focus-within > div > div {
+            border-color: #3b82f6 !important;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2) !important;
             outline: none !important;
         }
 
-        /* ============ PREMIUM BUTTONS ============ */
+        /* ============ BUTTONS WITH CLICK ANIMATION ============ */
         .stButton > button {
-            border-radius: 10px !important;
+            border-radius: 8px !important;
             font-weight: 600 !important;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
-            letter-spacing: 0.2px !important;
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
+            color: #ffffff !important;
+            border: none !important;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25) !important;
+            transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
         }
 
         .stButton > button:hover {
             transform: translateY(-2px) !important;
-            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.25) !important;
+            box-shadow: 0 6px 18px rgba(99, 102, 241, 0.35) !important;
         }
 
         .stButton > button:active {
-            transform: translateY(0px) !important;
+            transform: scale(0.97) !important;
         }
 
-        /* ============ CUSTOM SCROLLBAR ============ */
+        /* ============ WEBKIT SCROLLBAR ============ */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -720,62 +715,37 @@ def inject_custom_css():
             background: transparent;
         }
         ::-webkit-scrollbar-thumb {
-            background: rgba(128, 128, 128, 0.3);
+            background: #cbd5e1;
             border-radius: 10px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: rgba(128, 128, 128, 0.5);
+            background: #94a3b8;
         }
 
-        /* ============ DATAFRAME TABLE POLISH ============ */
-        .stDataFrame {
-            border-radius: 12px !important;
-            overflow: hidden;
+        /* ============ PROGRESS BAR ROUNDED TRACK & FILL ============ */
+        .stProgress > div {
+            border-radius: 10px !important;
         }
-
-        /* ============ CHAT MESSAGES ============ */
-        [data-testid="stChatMessage"] {
-            border-radius: 14px !important;
-            animation: fadeInUp 0.3s ease-out both;
-        }
-
-        /* ============ PROGRESS BAR ============ */
         .stProgress > div > div {
             border-radius: 10px !important;
         }
 
         /* ============ HEALTH SCORE CARD ============ */
         .health-card {
-            padding: 14px 18px;
-            border-radius: 14px;
-            border: 1px solid rgba(128, 128, 128, 0.12);
-            background: var(--secondary-background-color);
+            padding: 18px;
+            border-radius: 16px;
+            background: #ffffff;
             margin-bottom: 12px;
-            transition: transform 0.2s ease;
-        }
-        .health-card:hover {
-            transform: scale(1.02);
+            text-align: center;
         }
         .health-score {
             font-size: 2rem;
             font-weight: 800;
-            text-align: center;
             margin: 4px 0;
         }
         .health-label {
-            font-size: 0.8rem;
-            text-align: center;
-            opacity: 0.7;
-        }
-
-        /* ============ FOOTER ============ */
-        .app-footer {
-            text-align: center;
-            padding: 20px 0 10px 0;
-            opacity: 0.5;
-            font-size: 0.8rem;
-            border-top: 1px solid rgba(128, 128, 128, 0.12);
-            margin-top: 40px;
+            font-size: 0.85rem;
+            color: #64748b;
         }
 
         /* ============ PERFECT CIRCULAR FLOATING ACTION BUTTON (FAB) ============ */
