@@ -563,12 +563,14 @@ def inject_custom_css():
     if theme_mode == "Tối 🌙":
         dark_css = """
         .stApp { background-color: #0f172a !important; color: #f8fafc !important; }
-        h1, h2, h3, h4, h5, h6 { color: #f8fafc !important; }
-        div[data-testid="stMetric"], .stPlotlyChart, .stAltairChart, .stForm, .health-card {
+        h1, h2, h3, h4, h5, h6, p, label, span { color: #f8fafc !important; }
+        div[data-testid="stMetric"], .stPlotlyChart, .stAltairChart, .stForm, .health-card,
+        div[data-testid="stVerticalBlock"] > div > div[data-testid="stContainer"],
+        div[data-testid="stForm"] {
             background: #1e293b !important;
-            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
             color: #f8fafc !important;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4) !important;
         }
         div[data-testid="stMetricLabel"] > div { color: #94a3b8 !important; }
         div[data-testid="stMetricValue"] > div { color: #f8fafc !important; }
@@ -576,6 +578,9 @@ def inject_custom_css():
             background-color: #1e293b !important;
             border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
             color: #f8fafc !important;
+        }
+        [data-testid="stSidebarHeader"] {
+            background: rgba(30, 41, 59, 0.9) !important;
         }
         [data-baseweb="tab-list"] { background-color: #1e293b !important; }
         [data-baseweb="tab"] { color: #94a3b8 !important; }
@@ -585,6 +590,11 @@ def inject_custom_css():
             background-color: #0f172a !important;
             border: 1.5px solid #334155 !important;
             color: #f8fafc !important;
+        }
+        div[data-testid="stPopoverBody"], div[data-testid="stPopoverContent"], [data-baseweb="popover"] {
+            background-color: #1e293b !important;
+            color: #f8fafc !important;
+            border-color: rgba(255, 255, 255, 0.15) !important;
         }
         """
 
@@ -1079,20 +1089,20 @@ def render_sidebar():
         st.caption(f"Thu: {sb_thu:,.0f} ₫ | Chi: {sb_chi:,.0f} ₫")
 
 def render_floating_cskh_widget(df_all, summary, budget_limits):
-    """Hiển thị Nút Tròn CSKH Nổi ở góc dưới bên phải màn hình (Bottom-Right Viewport Fixed Button)"""
+    """Hiển thị Nút Tròn Trợ Lý Tài Chính AI Nổi ở góc dưới bên phải màn hình (Bottom-Right Viewport Fixed Button)"""
     if "messages" not in st.session_state:
         st.session_state.messages = [
-            {"role": "assistant", "content": "👋 Chào bạn! Mình là **Trợ Lý CSKH AI 🎓**. Bạn cần mình thực hiện thao tác gì (Thêm/Xóa/Hạn mức) hay hỗ trợ điều gì không?"}
+            {"role": "assistant", "content": "👋 Chào bạn! Mình là **Trợ Lý Tài Chính Sinh Viên 🎓**. Bạn cần mình hỗ trợ tính toán, ghi khoản chi hay đặt hạn mức gì không?"}
         ]
 
     with st.container():
-        with st.popover("🤖", help="Mở Trợ Lý Gemini AI 🎓"):
-            st.markdown("### 💬 Trợ Lý CSKH & Điều Hành AI 🎓")
-            st.caption("Thực thi mọi thao tác: Thêm khoản chi, xóa giao dịch, đặt hạn mức, tư vấn tiết kiệm...")
+        with st.popover("🤖", help="Mở Trợ Lý Tài Chính Sinh Viên 🎓"):
+            st.markdown("### 🎓 Trợ Lý Tài Chính Sinh Viên AI 💰")
+            st.caption("Đồng hành cùng sinh viên: Thêm khoản chi, xóa giao dịch, đặt hạn mức & tránh cháy túi!")
             
-            if st.button("🗑️ Xóa Lịch Sử CSKH", key="clear_cskh_pop_btn", type="secondary", use_container_width=True):
+            if st.button("🗑️ Xóa Lịch Sử Chat AI", key="clear_cskh_pop_btn", type="secondary", use_container_width=True):
                 st.session_state.messages = [
-                    {"role": "assistant", "content": "👋 Chào bạn! Mình là **Trợ Lý CSKH AI 🎓**. Bạn cần mình thực hiện thao tác gì (Thêm/Xóa/Hạn mức) hay hỗ trợ điều gì không?"}
+                    {"role": "assistant", "content": "👋 Chào bạn! Mình là **Trợ Lý Tài Chính Sinh Viên 🎓**. Bạn cần mình hỗ trợ tính toán, ghi khoản chi hay đặt hạn mức gì không?"}
                 ]
                 st.rerun()
 
@@ -1102,7 +1112,7 @@ def render_floating_cskh_widget(df_all, summary, budget_limits):
                     with st.chat_message(msg["role"]):
                         st.markdown(msg["content"])
 
-            pop_user_input = st.chat_input("Nhập yêu cầu CSKH...", key="pop_cskh_chat_input")
+            pop_user_input = st.chat_input("Nhập yêu cầu (VD: 'Ăn trưa 35k', 'Đặt hạn mức cafe 500k')...", key="pop_cskh_chat_input")
             if pop_user_input:
                 st.session_state.messages.append({"role": "user", "content": pop_user_input})
                 
@@ -1152,9 +1162,8 @@ def render_header():
         st.toast(st.session_state.pop("toast_msg"), icon="🎒")
 
 def main():
-    inject_custom_css()
-    
     render_sidebar()
+    inject_custom_css()
     render_header()
     
     df_all = st.session_state.get("df_transactions", pd.DataFrame())
