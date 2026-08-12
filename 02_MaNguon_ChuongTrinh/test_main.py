@@ -6,6 +6,11 @@ import sqlite3
 import datetime
 import os
 import json
+import sys
+
+# Thêm đường dẫn để có thể import từ app
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+from app import normalize_date_string
 
 
 # ==============================================================================
@@ -251,3 +256,29 @@ def test_student_categories():
     assert len(STUDENT_CATEGORIES) == 9
     assert "Ăn uống & Cafe" in STUDENT_CATEGORIES
     assert "Khác" in STUDENT_CATEGORIES
+
+
+def test_normalize_date_string():
+    """Kiểm thử hàm chuẩn hóa ngày tháng với nhiều định dạng khác nhau"""
+    # 1. Định dạng ISO chuẩn YYYY-MM-DD
+    assert normalize_date_string("2026-08-29") == "2026-08-29"
+    
+    # 2. Định dạng DD/MM/YYYY
+    assert normalize_date_string("29/08/2026") == "2026-08-29"
+    assert normalize_date_string("29/8/2026") == "2026-08-29"
+    
+    # 3. Định dạng viết tắt DD/MM/YY (ví dụ: 29/8/26)
+    assert normalize_date_string("29/8/26") == "2026-08-29"
+    assert normalize_date_string("29/08/26") == "2026-08-29"
+    
+    # 4. Đối tượng datetime.date hoặc datetime.datetime
+    d = datetime.date(2026, 8, 29)
+    assert normalize_date_string(d) == "2026-08-29"
+    
+    dt = datetime.datetime(2026, 8, 29, 12, 30)
+    assert normalize_date_string(dt) == "2026-08-29"
+    
+    # 5. Trường hợp rỗng / lỗi thì trả về ngày hôm nay
+    today_str = datetime.date.today().strftime("%Y-%m-%d")
+    assert normalize_date_string("") == today_str
+    assert normalize_date_string(None) == today_str

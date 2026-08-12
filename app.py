@@ -27,6 +27,34 @@ st.set_page_config(
 
 DB_FILE = "chi_tieu.db"
 
+def normalize_date_string(date_val):
+    if not date_val:
+        return datetime.date.today().strftime("%Y-%m-%d")
+    if isinstance(date_val, (datetime.date, datetime.datetime)):
+        return date_val.strftime("%Y-%m-%d")
+    date_str = str(date_val).strip()
+    for fmt in ("%Y-%m-%d", "%d/%m/%Y", "%d/%m/%y", "%Y/%m/%d", "%m/%d/%Y"):
+        try:
+            return datetime.datetime.strptime(date_str, fmt).strftime("%Y-%m-%d")
+        except ValueError:
+            pass
+    for sep in ("-", "/", "."):
+        if sep in date_str:
+            parts = date_str.split(sep)
+            if len(parts) == 3:
+                try:
+                    p0, p1, p2 = int(parts[0]), int(parts[1]), int(parts[2])
+                    if p0 > 1000:
+                        return f"{p0:04d}-{p1:02d}-{p2:02d}"
+                    elif p2 > 1000:
+                        return f"{p2:04d}-{p1:02d}-{p0:02d}"
+                    elif p2 > 0:
+                        y = 2000 + p2 if p2 < 100 else p2
+                        return f"{y:04d}-{p1:02d}-{p0:02d}"
+                except ValueError:
+                    pass
+    return datetime.date.today().strftime("%Y-%m-%d")
+
 STUDENT_CATEGORIES = [
     "Ăn uống & Cafe",
     "Tiền nhà & Tiện ích",
@@ -92,6 +120,20 @@ def init_db():
             ("Di chuyển & Xăng xe", 500000),
         ]
         cursor.executemany("INSERT OR REPLACE INTO han_muc (danh_muc, so_tien_limit) VALUES (?, ?)", sample_limits)
+        conn.commit()
+
+    # Clean and normalize any existing dates to YYYY-MM-DD format
+    cursor.execute("SELECT id, ngay FROM giao_dich")
+    rows = cursor.fetchall()
+    updates = []
+    for r in rows:
+        db_id = r["id"]
+        db_ngay = r["ngay"]
+        norm_ngay = normalize_date_string(db_ngay)
+        if norm_ngay != db_ngay:
+            updates.append((norm_ngay, db_id))
+    if updates:
+        cursor.executemany("UPDATE giao_dich SET ngay = ? WHERE id = ?", updates)
         conn.commit()
     conn.close()
 
@@ -1461,7 +1503,12 @@ def main():
                         STUDENT_CATEGORIES, 
                         index=STUDENT_CATEGORIES.index(selected_row["danh_muc"]) if selected_row["danh_muc"] in STUDENT_CATEGORIES else 0
                     )
-                    e_date = st.date_input("Ngày", datetime.datetime.strptime(selected_row["ngay"], "%Y-%m-%d").date())
+                    parsed_val = datetime.date.today()
+                    try:
+                        parsed_val = datetime.datetime.strptime(normalize_date_string(selected_row["ngay"]), "%Y-%m-%d").date()
+                    except Exception:
+                        pass
+                    e_date = st.date_input("Ngày", parsed_val)
                     e_note = st.text_input("Ghi chú", value=str(selected_row["ghi_chu"] if selected_row["ghi_chu"] else ""))
                     
                     if st.form_submit_button("💾 Lưu Thay Đổi", type="primary"):
