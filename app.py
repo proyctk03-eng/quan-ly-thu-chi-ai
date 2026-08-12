@@ -877,18 +877,44 @@ def inject_custom_css():
             color: #ffffff !important;
         }
 
-        /* Cửa sổ chat card mở ra ghim CHUẨN GÓC DƯỚI BÊN PHẢI ngay trên nút tròn */
+        /* ============ POP-IN ANIMATION & ENLARGED POPOVER CHAT CARD ============ */
+        @keyframes popInAI {
+            0% { opacity: 0; transform: scale(0.85) translateY(20px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* Cửa sổ chat card mở ra ghim CHUẨN GÓC DƯỚI BÊN PHẢI với hiệu ứng Pop-in */
         div[data-testid="stPopoverBody"], div[data-testid="stPopoverContent"] {
             position: fixed !important;
             bottom: 95px !important;
             right: 25px !important;
             z-index: 999999 !important;
-            border-radius: 20px !important;
+            border-radius: 16px !important;
             border: 1px solid rgba(226, 232, 240, 0.9) !important;
             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25) !important;
-            padding: 16px !important;
-            width: 380px !important;
-            max-width: 92vw !important;
+            padding: 18px !important;
+            width: 450px !important;
+            max-width: 95vw !important;
+            height: 650px !important;
+            max-height: 85vh !important;
+            scrollbar-width: none !important;
+            animation: popInAI 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards !important;
+        }
+
+        div[data-testid="stPopoverBody"]::-webkit-scrollbar, div[data-testid="stPopoverContent"]::-webkit-scrollbar {
+            display: none !important;
+            width: 0px !important;
+            background: transparent !important;
+        }
+
+        /* Tối ưu khu vực nhập liệu Chat Input dính lề dưới */
+        div[data-testid="stPopoverBody"] [data-testid="stChatInput"], 
+        div[data-testid="stPopoverContent"] [data-testid="stChatInput"] {
+            position: sticky !important;
+            bottom: 0 !important;
+            background: #ffffff !important;
+            z-index: 10 !important;
+            padding-top: 8px !important;
         }
         </style>
     """, unsafe_allow_html=True)
