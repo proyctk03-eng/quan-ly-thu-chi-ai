@@ -558,8 +558,39 @@ def draw_line_chart(df_all):
 
 def inject_custom_css():
     """Đưa CSS tùy biến vào Streamlit, sử dụng hoàn toàn CSS variables + micro-animations"""
-    st.markdown("""
+    theme_mode = st.session_state.get("app_theme_mode", "Sáng ☀️")
+    dark_css = ""
+    if theme_mode == "Tối 🌙":
+        dark_css = """
+        .stApp { background-color: #0f172a !important; color: #f8fafc !important; }
+        h1, h2, h3, h4, h5, h6 { color: #f8fafc !important; }
+        div[data-testid="stMetric"], .stPlotlyChart, .stAltairChart, .stForm, .health-card {
+            background: #1e293b !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            color: #f8fafc !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+        }
+        div[data-testid="stMetricLabel"] > div { color: #94a3b8 !important; }
+        div[data-testid="stMetricValue"] > div { color: #f8fafc !important; }
+        [data-testid="stSidebar"] {
+            background-color: #1e293b !important;
+            border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+            color: #f8fafc !important;
+        }
+        [data-baseweb="tab-list"] { background-color: #1e293b !important; }
+        [data-baseweb="tab"] { color: #94a3b8 !important; }
+        [data-baseweb="tab"]:hover { color: #f8fafc !important; background-color: #334155 !important; }
+        [data-baseweb="tab"][aria-selected="true"] { background-color: #334155 !important; color: #818cf8 !important; }
+        .stTextInput input, .stNumberInput input, .stSelectbox > div > div, .stDateInput input {
+            background-color: #0f172a !important;
+            border: 1.5px solid #334155 !important;
+            color: #f8fafc !important;
+        }
+        """
+
+    st.markdown(f"""
         <style>
+        {dark_css}
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
         /* ============ KILL CHART OVERFLOW SCROLLBARS ============ */
@@ -606,18 +637,11 @@ def inject_custom_css():
             animation: fadeInUp 0.4s ease-out both;
         }
 
-        /* ============ FIXED ALWAYS-VISIBLE SIDEBAR OVERRIDE ============ */
+        /* ============ SIDEBAR SAAS STYLING ============ */
         [data-testid="stSidebar"] {
-            transform: none !important;
-            visibility: visible !important;
-            display: block !important;
             background-color: #ffffff !important;
             box-shadow: 4px 0 15px rgba(0, 0, 0, 0.03) !important;
             border-right: 1px solid #e2e8f0 !important;
-        }
-
-        [data-testid="stMain"] {
-            margin-left: unset !important;
         }
 
         [data-testid="stSidebar"] .block-container {
@@ -957,6 +981,8 @@ def inject_custom_css():
 def render_sidebar():
     """Hiển thị giao diện menu bên hông"""
     with st.sidebar:
+        st.radio("🎨 Giao diện", ["Sáng ☀️", "Tối 🌙"], horizontal=True, key="app_theme_mode")
+        st.markdown("---")
         st.image("https://img.icons8.com/isometric/100/student-male.png", width=75)
         st.markdown("<h2 style='font-weight:800; font-size:1.35rem;'>🎓 Sổ Tay Sinh Viên</h2>", unsafe_allow_html=True)
         st.caption("Quản lý tài chính cá nhân thông minh & tiết kiệm")
