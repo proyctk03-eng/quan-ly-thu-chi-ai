@@ -642,6 +642,44 @@ def inject_custom_css():
             font-size: 0.85rem !important;
         }
 
+        /* ============ SIDEBAR HEADER GLASSMORPHISM & COLLAPSE BUTTON ============ */
+        [data-testid="stSidebarHeader"] {
+            background: rgba(248, 250, 252, 0.85) !important;
+            backdrop-filter: blur(12px) !important;
+            -webkit-backdrop-filter: blur(12px) !important;
+            padding: 1rem 1.5rem 0.5rem 1.5rem !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.04) !important;
+        }
+
+        [data-testid="stSidebarHeader"] button, [data-testid="stSidebarCollapseButton"] button {
+            background-color: #ffffff !important;
+            border-radius: 50% !important;
+            border: 1px solid #e2e8f0 !important;
+            width: 32px !important;
+            height: 32px !important;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            color: #64748b !important;
+            transition: all 0.2s ease !important;
+        }
+
+        [data-testid="stSidebarHeader"] button:hover, [data-testid="stSidebarCollapseButton"] button:hover {
+            background-color: #f1f5f9 !important;
+            color: #0f172a !important;
+            transform: scale(1.05) !important;
+        }
+
+        [data-testid="stSidebar"] img, [data-testid="stSidebarHeader"] img {
+            filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.12)) !important;
+            transition: transform 0.3s ease !important;
+        }
+
+        [data-testid="stSidebar"] img:hover, [data-testid="stSidebarHeader"] img:hover {
+            transform: translateY(-3px) !important;
+        }
+
         /* ============ GRADIENT HEADER ============ */
         .student-header {
             font-size: 2.2rem;
