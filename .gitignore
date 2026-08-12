@@ -12,3 +12,6 @@ __pycache__/
 
 # Exclude drive download sample folder
 drive-download*
+
+cloudflared.exe
+*.exe
