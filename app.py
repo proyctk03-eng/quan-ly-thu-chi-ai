@@ -776,23 +776,23 @@ def inject_custom_css():
         /* ============ PERFECT CIRCULAR FLOATING ACTION BUTTON (FAB) ============ */
         div[data-testid="stPopover"] {
             position: fixed !important;
-            bottom: 30px !important;
-            right: 30px !important;
+            bottom: 25px !important;
+            right: 25px !important;
             z-index: 999999 !important;
         }
 
         div[data-testid="stPopover"] > button {
             border-radius: 50% !important;
-            width: 64px !important;
-            height: 64px !important;
-            min-width: 64px !important;
-            min-height: 64px !important;
-            max-width: 64px !important;
-            max-height: 64px !important;
+            width: 60px !important;
+            height: 60px !important;
+            min-width: 60px !important;
+            min-height: 60px !important;
+            max-width: 60px !important;
+            max-height: 60px !important;
             background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%) !important;
             color: #ffffff !important;
             border: 2px solid #ffffff !important;
-            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.6) !important;
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.6) !important;
             padding: 0 !important;
             display: flex !important;
             align-items: center !important;
@@ -801,7 +801,7 @@ def inject_custom_css():
         }
 
         div[data-testid="stPopover"] > button:hover {
-            transform: scale(1.12) !important;
+            transform: scale(1.1) !important;
             box-shadow: 0 12px 35px rgba(168, 85, 247, 0.8) !important;
         }
 
@@ -810,20 +810,24 @@ def inject_custom_css():
         }
 
         div[data-testid="stPopover"] > button p {
-            font-size: 30px !important;
+            font-size: 28px !important;
             margin: 0 !important;
             line-height: 1 !important;
             color: #ffffff !important;
         }
 
-        /* Styling cho cửa sổ chat popup nổi ra ở góc dưới bên phải */
-        div[data-testid="stPopoverBody"] {
+        /* Cửa sổ chat card mở ra ghim CHUẨN GÓC DƯỚI BÊN PHẢI ngay trên nút tròn */
+        div[data-testid="stPopoverBody"], div[data-testid="stPopoverContent"] {
+            position: fixed !important;
+            bottom: 95px !important;
+            right: 25px !important;
+            z-index: 999999 !important;
             border-radius: 20px !important;
             border: 1px solid rgba(226, 232, 240, 0.9) !important;
             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25) !important;
             padding: 16px !important;
-            width: 400px !important;
-            max-width: 90vw !important;
+            width: 380px !important;
+            max-width: 92vw !important;
         }
         </style>
     """, unsafe_allow_html=True)
