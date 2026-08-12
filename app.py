@@ -102,13 +102,21 @@ def init_db():
     if cursor.fetchone()[0] == 0:
         today = datetime.date.today()
         sample_transactions = [
-            ("Thu", 4000000, "Chu cấp gia đình", today.strftime("%Y-%m-01"), "Bố mẹ gửi tiền tháng này 💰"),
-            ("Thu", 2500000, "Đi làm thêm", today.strftime("%Y-%m-05"), "Lương gia sư / quán cafe 💼"),
-            ("Chi", 1800000, "Tiền nhà & Tiện ích", today.strftime("%Y-%m-02"), "Tiền phòng trọ & điện nước 🏠"),
-            ("Chi", 1500000, "Ăn uống & Cafe", today.strftime("%Y-%m-03"), "Cơm tháng, ăn vặt & cafe chạy deadline 🍜"),
-            ("Chi", 450000, "Học tập & Sách vở", today.strftime("%Y-%m-04"), "In giáo trình & mua tài liệu học 📚"),
-            ("Chi", 300000, "Di chuyển & Xăng xe", today.strftime("%Y-%m-06"), "Đổ xăng & vé xe bus 🛵"),
-            ("Chi", 350000, "Giải trí & Bè bạn", today.strftime("%Y-%m-07"), "Xem phim & ăn đồ nướng cuối tuần 🎬"),
+            ("Thu", 4500000, "Chu cấp gia đình", today.strftime("%Y-%m-01"), "Bố mẹ gửi tiền sinh hoạt tháng này 💰"),
+            ("Thu", 2200000, "Đi làm thêm", today.strftime("%Y-%m-05"), "Lương làm thêm part-time quán cafe 💼"),
+            ("Thu", 1000000, "Chu cấp gia đình", today.strftime("%Y-%m-10"), "Học bổng khuyến khích học tập học kỳ này 🎖️"),
+            ("Chi", 2000000, "Tiền nhà & Tiện ích", today.strftime("%Y-%m-02"), "Tiền phòng trọ + điện nước tháng này 🏠"),
+            ("Chi", 150000, "Ăn uống & Cafe", today.strftime("%Y-%m-03"), "Ăn buffet lẩu nướng với các bạn trong phòng trọ 🍲"),
+            ("Chi", 35000, "Ăn uống & Cafe", today.strftime("%Y-%m-04"), "Bữa sáng phở bò tái gầu ngon lành 🍜"),
+            ("Chi", 280000, "Học tập & Sách vở", today.strftime("%Y-%m-04"), "Mua sách ngoại văn + in tài liệu ôn thi 📚"),
+            ("Chi", 90000, "Di chuyển & Xăng xe", today.strftime("%Y-%m-06"), "Đổ xăng xe máy chạy cả tuần 🛵"),
+            ("Chi", 120000, "Giải trí & Bè bạn", today.strftime("%Y-%m-07"), "Xem phim bom tấn rạp CGV cuối tuần 🎬"),
+            ("Chi", 350000, "Mua sắm cá nhân", today.strftime("%Y-%m-08"), "Mua áo thun mới + giày sneaker 👟"),
+            ("Chi", 55000, "Ăn uống & Cafe", today.strftime("%Y-%m-09"), "Trà sữa Highlands 🧋"),
+            ("Chi", 250000, "Ăn uống & Cafe", today.strftime("%Y-%m-11"), "Tiền mua nhu yếu phẩm, rau củ quả tại WinMart 🛒"),
+            ("Chi", 130000, "Học tập & Sách vở", today.strftime("%Y-%m-12"), "Đóng lệ phí đăng ký thi IELTS/TOEIC 📝"),
+            ("Chi", 50000, "Di chuyển & Xăng xe", today.strftime("%Y-%m-13"), "Vé xe bus liên tuyến tháng của sinh viên 🚌"),
+            ("Chi", 180000, "Khác", today.strftime("%Y-%m-14"), "Tiền quỹ lớp + đóng góp sinh hoạt chi đoàn 🤝")
         ]
         cursor.executemany("INSERT INTO giao_dich (loai, so_tien, danh_muc, ngay, ghi_chu) VALUES (?, ?, ?, ?, ?)", sample_transactions)
         
