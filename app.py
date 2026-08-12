@@ -481,7 +481,7 @@ def draw_pie_chart(df_all):
             marker=dict(line=dict(width=2))
         )
         fig_pie.update_layout(
-            margin=dict(t=30, b=30, l=20, r=20),
+            margin=dict(l=10, r=10, t=30, b=10),
             paper_bgcolor='rgba(0,0,0,0)',
             plot_bgcolor='rgba(0,0,0,0)',
             legend=dict(orientation="h", yanchor="bottom", y=-0.2, xanchor="center", x=0.5)
@@ -506,7 +506,7 @@ def draw_bar_chart(df_all):
         labels={"so_tien": "Số tiền (VND)", "thang": "Tháng"}
     )
     fig_bar.update_layout(
-        margin=dict(t=30, b=30, l=20, r=20),
+        margin=dict(l=10, r=10, t=30, b=10),
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
@@ -548,7 +548,7 @@ def draw_line_chart(df_all):
         marker_color="rgba(239, 68, 68, 0.4)"
     )
     fig_line.update_layout(
-        margin=dict(t=30, b=30, l=20, r=20),
+        margin=dict(l=10, r=10, t=30, b=10),
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
@@ -561,6 +561,19 @@ def inject_custom_css():
     st.markdown("""
         <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+        /* ============ KILL CHART OVERFLOW SCROLLBARS ============ */
+        [data-testid="stPlotlyChart"],
+        [data-testid="stArrowVegaLiteChart"],
+        [data-testid="stPlotlyChart"] > div,
+        [data-testid="stArrowVegaLiteChart"] > div {
+            overflow: hidden !important;
+        }
+
+        [data-testid="stPlotlyChart"] iframe {
+            height: 100% !important;
+            overflow: hidden !important;
+        }
 
         /* ============ CLEAN UP DEFAULT STREAMLIT MENU & FOOTER ============ */
         #MainMenu { visibility: hidden !important; }
