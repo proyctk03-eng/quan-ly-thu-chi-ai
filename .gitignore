@@ -1,0 +1,14 @@
+# Git Ignore - Sổ Tay Quản Lý Chi Tiêu Sinh Viên AI
+.env
+.env.*
+!.env.example
+__pycache__/
+*.pyc
+*.db
+*.sqlite3
+.pytest_cache/
+.vscode/
+.idea/
+
+# Exclude drive download sample folder
+drive-download*
