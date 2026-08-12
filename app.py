@@ -640,7 +640,7 @@ def inject_custom_css():
         }
         """
 
-    st.markdown("<style>\n" + dark_css + """
+    st.markdown("<style>\n" + """
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
         /* ============ KILL CHART OVERFLOW SCROLLBARS ============ */
@@ -1064,8 +1064,7 @@ def inject_custom_css():
             z-index: 10 !important;
             padding-top: 8px !important;
         }
-        </style>
-    """, unsafe_allow_html=True)
+        """ + "\n" + dark_css + "\n</style>", unsafe_allow_html=True)
 
 def render_sidebar():
     """Hiển thị giao diện menu bên hông"""
