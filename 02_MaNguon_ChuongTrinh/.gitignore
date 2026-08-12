@@ -1,0 +1,36 @@
+# ==============================================================================
+# Git Ignore - Sổ Tay Quản Lý Chi Tiêu Sinh Viên AI
+# ==============================================================================
+
+# Biến môi trường (chứa API Key bí mật)
+.env
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# CSDL SQLite (dữ liệu cá nhân, không nên commit)
+*.db
+*.sqlite3
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Streamlit cache
+.streamlit/secrets.toml
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/

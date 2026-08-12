@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__ide__executeCode",
+      "PowerShell(python \"d:\\\\Google Driver\\\\BM_KHMT_Giao_trinh\\\\Ung dung AI\\\\Codes\\\\Bai 02\\\\CacGiaiDoanThucHien\\\\_read_docx.py\")",
+      "PowerShell(python \"d:\\\\Google Driver\\\\BM_KHMT_Giao_trinh\\\\Ung dung AI\\\\Codes\\\\Bai 02\\\\CacGiaiDoanThucHien\\\\_build_docx.py\")",
+      "PowerShell(python \"d:\\\\Google Driver\\\\BM_KHMT_Giao_trinh\\\\Ung dung AI\\\\Codes\\\\Bai 02\\\\CacGiaiDoanThucHien\\\\_verify_docx.py\")",
+      "PowerShell(python \"d:\\\\Google Driver\\\\BM_KHMT_Giao_trinh\\\\Ung dung AI\\\\Codes\\\\Bai 02\\\\CacGiaiDoanThucHien\\\\_fix_docx.py\")",
+      "PowerShell(python \"d:\\\\Google Driver\\\\BM_KHMT_Giao_trinh\\\\Ung dung AI\\\\Codes\\\\Bai 02\\\\CacGiaiDoanThucHien\\\\_rebuild_docx.py\")",
+      "Bash(python generate_ba_doc.py)",
+      "Bash(python generate_ba_doc_part2.py)",
+      "Bash(python generate_ba_doc_part3.py)"
+    ]
+  }
+}
