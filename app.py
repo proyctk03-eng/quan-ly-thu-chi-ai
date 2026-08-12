@@ -605,7 +605,11 @@ def inject_custom_css():
     if theme_mode == "Tối 🌙":
         dark_css = """
         .stApp { background-color: #0f172a !important; color: #f8fafc !important; }
-        h1, h2, h3, h4, h5, h6, p, label, span { color: #f8fafc !important; }
+        h1, h2, h3, h4, h5, h6, label { color: #f8fafc !important; }
+        p:not([data-testid="stAlert"] p):not(.stAlert p), 
+        span:not([data-testid="stAlert"] span):not(.stAlert span) { 
+            color: #f8fafc !important; 
+        }
         div[data-testid="stMetric"], .stPlotlyChart, .stAltairChart, .stForm, .health-card,
         div[data-testid="stVerticalBlock"] > div > div[data-testid="stContainer"],
         div[data-testid="stForm"] {
@@ -637,6 +641,16 @@ def inject_custom_css():
             background-color: #1e293b !important;
             color: #f8fafc !important;
             border-color: rgba(255, 255, 255, 0.15) !important;
+        }
+        [data-testid="stSidebar"] [data-testid="stAlert"], [data-testid="stSidebar"] .stAlert {
+            background-color: rgba(16, 185, 129, 0.12) !important;
+            border: 1px solid rgba(16, 185, 129, 0.3) !important;
+            border-left: 4px solid #10b981 !important;
+            color: #10b981 !important;
+            border-radius: 8px !important;
+        }
+        [data-testid="stAlert"] p, [data-testid="stAlert"] span, [data-testid="stAlert"] div {
+            color: inherit !important;
         }
         """
 
