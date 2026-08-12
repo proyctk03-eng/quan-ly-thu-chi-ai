@@ -562,6 +562,11 @@ def inject_custom_css():
         <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
+        /* ============ CLEAN UP DEFAULT STREAMLIT MENU & FOOTER ============ */
+        #MainMenu { visibility: hidden !important; }
+        footer { visibility: hidden !important; }
+        header { visibility: hidden !important; }
+
         /* ============ GLOBAL FONT & BASE ============ */
         html, body, [class*="css"] {
             font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
