@@ -606,11 +606,18 @@ def inject_custom_css():
             animation: fadeInUp 0.4s ease-out both;
         }
 
-        /* ============ PIXEL-PERFECT SIDEBAR SAAS OPTIMIZATION ============ */
+        /* ============ FIXED ALWAYS-VISIBLE SIDEBAR OVERRIDE ============ */
         [data-testid="stSidebar"] {
+            transform: none !important;
+            visibility: visible !important;
+            display: block !important;
             background-color: #ffffff !important;
             box-shadow: 4px 0 15px rgba(0, 0, 0, 0.03) !important;
             border-right: 1px solid #e2e8f0 !important;
+        }
+
+        [data-testid="stMain"] {
+            margin-left: unset !important;
         }
 
         [data-testid="stSidebar"] .block-container {
