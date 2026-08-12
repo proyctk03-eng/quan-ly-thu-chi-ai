@@ -750,20 +750,23 @@ def inject_custom_css():
             margin-bottom: 0.2rem;
         }
 
-        /* ============ SAAS CARD UI & HOVER ANIMATIONS ============ */
-        div[data-testid="stMetric"], .stPlotlyChart, .stAltairChart, .stForm, .health-card {
+        /* ============ SAAS TECH CARD UI & HOVER ANIMATIONS ============ */
+        div[data-testid="stMetric"], .stPlotlyChart, .stAltairChart, .stForm, .health-card,
+        div[data-testid="stVerticalBlock"] > div > div[data-testid="stContainer"],
+        div[data-testid="stForm"] {
             background: #ffffff !important;
-            border: 1px solid rgba(226, 232, 240, 0.8) !important;
+            border: 1.5px solid rgba(99, 102, 241, 0.18) !important;
             border-radius: 16px !important;
             padding: 20px !important;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+            box-shadow: 0 4px 18px rgba(99, 102, 241, 0.06) !important;
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
         }
 
-        div[data-testid="stMetric"]:hover, .stPlotlyChart:hover, .stForm:hover, .health-card:hover {
-            transform: translateY(-4px) !important;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08) !important;
-            border-color: rgba(99, 102, 241, 0.3) !important;
+        div[data-testid="stMetric"]:hover, .stPlotlyChart:hover, .stForm:hover, .health-card:hover,
+        div[data-testid="stVerticalBlock"] > div > div[data-testid="stContainer"]:hover {
+            transform: translateY(-3px) !important;
+            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.18) !important;
+            border-color: rgba(99, 102, 241, 0.45) !important;
         }
 
         div[data-testid="stMetricLabel"] > div {
@@ -1233,14 +1236,15 @@ def main():
                     pct = min(spent / limit_amt, 1.0) if limit_amt > 0 else 0.0
                     
                     with b_cols[col_idx % len(b_cols)]:
-                        st.markdown(f"**{cat}**")
-                        st.caption(f"Đã tiêu: {spent:,.0f} / {limit_amt:,.0f} ₫ ({pct*100:.1f}%)")
-                        if pct >= 1.0:
-                            st.progress(pct, text="⚠️ Vượt hạn mức!")
-                        elif pct >= 0.8:
-                            st.progress(pct, text="⚡ Sắp chạm hạn mức")
-                        else:
-                            st.progress(pct)
+                        with st.container(border=True):
+                            st.markdown(f"**🎯 {cat}**")
+                            st.caption(f"Đã tiêu: **{spent:,.0f}** / **{limit_amt:,.0f} ₫** ({pct*100:.1f}%)")
+                            if pct >= 1.0:
+                                st.progress(pct, text="🚨 Vượt hạn mức!")
+                            elif pct >= 0.8:
+                                st.progress(pct, text="⚡ Sắp chạm hạn mức")
+                            else:
+                                st.progress(pct)
                         col_idx += 1
             else:
                 st.info("Chưa cấu hình hạn mức chi tiêu. Hãy đặt hạn mức ở thanh bên trái!")
