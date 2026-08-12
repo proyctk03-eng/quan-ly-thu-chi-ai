@@ -1022,17 +1022,13 @@ def main():
     summary = st.session_state.get("summary", {"tong_thu": 0.0, "tong_chi": 0.0, "so_du": 0.0})
     budget_limits = st.session_state.get("budget_limits", {})
     
-    # Tạo Layout 2 Cột: Cột chính bên trái (col_main) và Cột Trợ lý Mini Chatbox bên phải (col_chat)
-    col_main, col_chat = st.columns([2.5, 1])
-
-    with col_main:
-        # Định nghĩa các Tabs chức năng ở cột chính bên trái
-        tab1, tab2, tab3, tab4 = st.tabs([
-            "📊 Thống Kê", 
-            "➕ Thêm Chi Tiêu", 
-            "📜 Lịch Sử", 
-            "🧠 Gợi Ý Tiết Kiệm"
-        ])
+    # Các Tabs chức năng chính chiếm 100% chiều rộng màn hình
+    tab1, tab2, tab3, tab4 = st.tabs([
+        "📊 Thống Kê", 
+        "➕ Thêm Chi Tiêu", 
+        "📜 Lịch Sử", 
+        "🧠 Gợi Ý Tiết Kiệm"
+    ])
 
     # ==============================================================================
     # TAB 1: THỐNG KÊ & NGÂN SÁCH
@@ -1420,46 +1416,7 @@ def main():
                     advice = generate_savings_advice(df_all)
                     st.markdown(advice)
 
-    # ==============================================================================
-    # MINI CHATBOX GEMINI Ở CỘT BÊN PHẢI (COL_CHAT)
-    # ==============================================================================
-    with col_chat:
-        st.markdown("### 🤖 Trợ Lý Gemini")
-        
-        chat_h1, chat_h2 = st.columns([0.7, 0.3])
-        with chat_h1:
-            st.caption("Cố vấn tài chính AI 🎓")
-        with chat_h2:
-            if st.button("🗑️", key="clear_mini_chat_btn", help="Xóa lịch sử chat", type="secondary"):
-                st.session_state.chat_history = [
-                    {"role": "assistant", "content": "Chào bạn! Mình là Trợ lý AI Sinh Viên Gemini 🎓. Bạn cần hỗ trợ gì về chi tiêu hôm nay?"}
-                ]
-                st.session_state["toast_msg"] = "🗑️ Đã xóa lịch sử chat!"
-                st.rerun()
-
-        if "chat_history" not in st.session_state:
-            st.session_state.chat_history = [
-                {"role": "assistant", "content": "Chào bạn! Mình là Trợ lý AI Sinh Viên Gemini 🎓. Bạn cần hỗ trợ gì về chi tiêu hôm nay?"}
-            ]
-
-        # Khung chứa tin nhắn cố định chiều cao (height=450) có thanh cuộn
-        chat_box = st.container(height=450)
-        with chat_box:
-            for msg in st.session_state.chat_history:
-                with st.chat_message(msg["role"]):
-                    st.markdown(msg["content"])
-
-        # Input ChatBox ở ngay bên dưới khung chat
-        mini_user_query = st.chat_input("Hỏi Gemini...", key="mini_chat_input")
-        if mini_user_query:
-            st.session_state.chat_history.append({"role": "user", "content": mini_user_query})
-            if check_ai_key():
-                ans = chat_with_gemini(st.session_state.chat_history, mini_user_query, df_all)
-                if ans:
-                    st.session_state.chat_history.append({"role": "assistant", "content": ans})
-            st.rerun()
-
-    # Render Floating CSKH Widget anchored at bottom-right corner of viewport
+    # Render Floating Action Button (FAB) CSKH Gemini AI Widget anchored at bottom-right corner of viewport (Global across all tabs)
     render_floating_cskh_widget(df_all, summary, budget_limits)
 
     # Footer
