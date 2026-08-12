@@ -12,7 +12,7 @@
 
 **Một hệ thống quản lý tài chính cá nhân thông minh, tích hợp Trợ lý AI Google Gemini, giúp sinh viên kiểm soát thu chi, lập hạn mức ngân sách và phòng tránh nguy cơ "cháy túi" cuối tháng.**
 
-[🌐 Live Demo App](https://passive-couple-takes-composite.trycloudflare.com) • [📦 GitHub Repo](https://github.com/proyctk03-eng/quan-ly-thu-chi-ai) • [📄 Báo Cáo Đồ Án](../01_BaoCao_TàiLieu_Va_SoDo/)
+[🌐 Live Demo App](https://passive-couple-takes-composite.trycloudflare.com) • [📦 GitHub Repo](https://github.com/proyctk03-eng/quan-ly-thu-chi-ai) • [📄 Báo Cáo Đồ Án](./01_BaoCao_TàiLieu_Va_SoDo/)
 
 </div>
 
@@ -83,7 +83,15 @@
 ## 🏗️ Động Cơ AI & Xử Lý Ngôn Ngữ Tự Nhiên
 
 - **Google Gemini 3.5 Flash Model**: Tốc độ xử lý siêu nhanh với chi phí tối ưu.
-- **Structured Outputs Schema**: Sử dụng `Pydantic` / `TypedDict` đảm bảo kết quả trả về từ AI luôn tuân thủ 100% định dạng JSON hợp lệ.
+- **Structured Outputs Schema**: Sử dụng `Pydantic` / `TypedDict` đảm bảo kết quả trả về từ AI luôn tuân thủ 100% định dạng JSON hợp lệ:
+  ```json
+  {
+    "type": "Chi",
+    "amount": 35000,
+    "category": "Ăn uống & Cafe",
+    "description": "Ăn phở sáng"
+  }
+  ```
 
 ---
 
@@ -111,29 +119,85 @@ cp 02_MaNguon_ChuongTrinh/.env.example .env
 # Mở file .env và điền API Key Google Gemini của bạn
 GEMINI_API_KEY=AIzaSy...YourActualGeminiApiKey
 ```
+> 💡 *Bạn có thể nhận Gemini API Key miễn phí tại [Google AI Studio](https://aistudio.google.com/).*
 
 ### 4. Khởi Chạy Ứng Dụng Web
 ```bash
 streamlit run 02_MaNguon_ChuongTrinh/app.py
 ```
+👉 Trình duyệt sẽ tự động mở địa chỉ: `http://localhost:8501`
 
 ---
 
 ## 🐳 Triển Khai Với Docker
 
+Ứng dụng được đóng gói sẵn Docker để triển khai dễ dàng trên bất kỳ máy chủ nào:
+
 ```bash
 cd 02_MaNguon_ChuongTrinh
+
+# Khởi chạy ứng dụng với Docker Compose
 docker-compose up --build -d
 ```
+Ứng dụng sẽ hoạt động tại địa chỉ: `http://localhost:8501`
 
 ---
 
 ## 🧪 Kiểm Thử Tự Động (Automated Testing)
 
+Dự án được trang bị bộ kiểm thử tự động **Pytest** bao phủ 100% các chức năng cốt lõi:
+
 ```bash
+# Chạy bộ test suite
 pytest 02_MaNguon_ChuongTrinh/test_main.py -v
 ```
+
+**Kết quả kiểm thử:**
+- `test_create_tables`: PASSED (Khởi tạo CSDL SQLite thành công).
+- `test_insert_transaction`: PASSED (Thêm giao dịch chuẩn xác).
+- `test_delete_transaction`: PASSED (Xóa giao dịch an toàn).
+- `test_update_transaction`: PASSED (Cập nhật giao dịch).
+- `test_budget_limit`: PASSED (Đặt hạn mức ngân sách).
+- `test_financial_summary`: PASSED (Tính toán tổng thu, chi, số dư).
+- `test_category_mapping`: PASSED (Ánh xạ danh mục sinh viên).
+- `test_money_slang_conversion`: PASSED (Quy đổi slang 'k', 'củ', 'm').
+- `test_env_file_exists`: PASSED (Xác minh môi trường bảo mật).
+- `test_student_categories`: PASSED (Danh mục sinh viên hợp lệ).
+
 👉 **Tỷ lệ vượt qua: 10/10 PASS (100%)**
+
+---
+
+## 📂 Cấu Trúc Dự Án
+
+```
+quan-ly-thu-chi-ai/
+├── 📁 01_BaoCao_TàiLieu_Va_SoDo/      # Báo cáo đồ án (.docx, .md) & sơ đồ quy trình
+│   ├── 01_project-plan.md              # Kế hoạch phát triển dự án
+│   ├── 02_requirements-qa.md           # Yêu cầu hệ thống & Q&A
+│   ├── 03_requirements-specification.md # Đặc tả yêu cầu phần mềm (SRS)
+│   ├── 04_object-oriented-design.md    # Thiết kế hướng đối tượng (OOD)
+│   ├── 05_functional-testing.md        # Kịch bản kiểm thử chức năng
+│   ├── 06_database.md                  # Thiết kế cơ sở dữ liệu SQLite
+│   ├── 07_user-guide.md                # Hướng dẫn sử dụng cho sinh viên
+│   ├── BAO_CAO_AP_DUNG_PROMPT_AI.md     # Báo cáo kỹ thuật Prompt Engineering
+│   └── system_architecture_diagram.html # Sơ đồ kiến trúc hệ thống
+│
+├── 📁 02_MaNguon_ChuongTrinh/          # Gói mã nguồn chương trình chính
+│   ├── 📁 backend/                     # REST API FastAPI backend (mở rộng microservices)
+│   ├── 📁 frontend/                    # Giao diện frontend Streamlit
+│   ├── 📁 tests/                       # Thư mục chứa các bài unit test
+│   ├── app.py                          # Mã nguồn ứng dụng Web chính
+│   ├── test_main.py                    # Script chạy kiểm thử Pytest
+│   ├── requirements.txt                # Danh sách thư viện Python
+│   ├── Dockerfile                      # File đóng gói Docker container
+│   ├── docker-compose.yml              # File cấu hình Docker Compose
+│   └── .env.example                    # File mẫu biến môi trường
+│
+├── .gitignore                          # Danh sách loại trừ Git
+├── app.py                              # Trỏ tới mã nguồn ứng dụng chính
+└── README.md                           # Tài liệu tài nguyên dự án (file này)
+```
 
 ---
 
@@ -143,3 +207,9 @@ pytest 02_MaNguon_ChuongTrinh/test_main.py -v
 - **Nhóm**: Nhóm 02
 - **Tên dự án**: Sổ Tay Quản Lý Chi Tiêu Sinh Viên AI
 - **Repository**: [proyctk03-eng/quan-ly-thu-chi-ai](https://github.com/proyctk03-eng/quan-ly-thu-chi-ai)
+
+---
+
+<div align="center">
+  <sub>Made with ❤️ for Students | Powered by <strong>Google Gemini AI</strong> & <strong>Streamlit</strong></sub>
+</div>
