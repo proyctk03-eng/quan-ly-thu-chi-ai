@@ -773,41 +773,32 @@ def inject_custom_css():
             margin-top: 40px;
         }
 
-        /* ============ FLOATING ACTION BUTTON (FAB) CSKH WIDGET ============ */
+        /* ============ FLOATING ACTION BUTTON (FAB) CHATBOT WIDGET ============ */
         div[data-testid="stPopover"] {
             position: fixed !important;
-            bottom: 30px !important;
-            right: 30px !important;
-            z-index: 99999 !important;
+            bottom: 35px !important;
+            right: 35px !important;
+            z-index: 999999 !important;
         }
 
-        div[data-testid="stPopover"] button {
-            border-radius: 50% !important;
-            width: 65px !important;
-            height: 65px !important;
-            background-color: #4C6EF5 !important;
-            border: none !important;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
-            padding: 0 !important;
+        div[data-testid="stPopover"] > button {
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%) !important;
+            color: #ffffff !important;
+            border-radius: 50px !important;
+            padding: 14px 26px !important;
+            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.6) !important;
+            font-weight: 700 !important;
+            font-size: 1.15rem !important;
+            border: 2px solid #ffffff !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
-            transition: transform 0.25s ease !important;
+            transition: all 0.3s ease !important;
         }
 
-        div[data-testid="stPopover"] button:hover {
+        div[data-testid="stPopover"] > button:hover {
             transform: scale(1.08) !important;
-            background-color: #3b5bdb !important;
-        }
-
-        div[data-testid="stPopover"] button svg {
-            display: none !important;
-        }
-
-        div[data-testid="stPopover"] button p {
-            font-size: 28px !important;
-            margin: 0 !important;
-            color: #ffffff !important;
+            box-shadow: 0 12px 35px rgba(168, 85, 247, 0.7) !important;
         }
 
         /* Styling cho cửa sổ chat popup nổi ra ở góc dưới bên phải */
@@ -816,7 +807,7 @@ def inject_custom_css():
             border: 1px solid rgba(226, 232, 240, 0.9) !important;
             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25) !important;
             padding: 16px !important;
-            width: 380px !important;
+            width: 400px !important;
             max-width: 90vw !important;
         }
         </style>
@@ -891,7 +882,7 @@ def render_floating_cskh_widget(df_all, summary, budget_limits):
         ]
 
     with st.container():
-        with st.popover("💬", use_container_width=False):
+        with st.popover("🤖 Trợ Lý Gemini AI", use_container_width=False):
             st.markdown("### 💬 Trợ Lý CSKH & Điều Hành AI 🎓")
             st.caption("Thực thi mọi thao tác: Thêm khoản chi, xóa giao dịch, đặt hạn mức, tư vấn tiết kiệm...")
             
